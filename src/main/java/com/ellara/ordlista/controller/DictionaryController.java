@@ -6,62 +6,68 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
 @AllArgsConstructor
-@SessionAttributes({"query", "response"})
 public class DictionaryController {
 
     @Autowired
     private DictionaryService dictionaryService;
 
-//    @ModelAttribute("query")
-//    public String setUpQuery() { return "";};
-
-//    @ModelAttribute("response")
-//    public List<Dictionary> setUpResponse() {
-//        return new List<Dictionary>;
-//    }
-
     // REDIRECT
     @GetMapping("/")
     public String getRoot() {
-        return "redirect:/dictionary";
+        return "redirect:/home";
     }
 
+    //
+    // HOME VIEW
+    //
+
     // GET
-    @GetMapping("/dictionary")
-    public String getDictionary(Model model) {
-        model.addAttribute("entryList", dictionaryService.fetchDictionaryList());
-        return "dictionary";
+    @GetMapping("/home")
+    public String getHomeView(Model model) {
+        model.addAttribute("dictionaryList", dictionaryService.fetchDictionaryList());
+        return "home";
     }
 
     // POST
-    @PostMapping("/dictionary")
-    public String saveDictionary(HttpSession httpSession,
-                                     @Valid @RequestBody Dictionary dictionary) {
-        dictionaryService.saveDictionary(dictionary);
-        return "dictionary";
+    @PostMapping("/home")
+    public String postHomeView(HttpSession httpSession,
+                                 @RequestParam(required = false) String create) {
+        if (create != null) {
+            return "create";
+        }
+        return "home";
     }
 
-//    // UPDATE
-//    @PutMapping("/{id}")
-//    public Dictionary updateDictionary(@RequestBody Dictionary dictionary, @PathVariable("id") Long dictionaryId) {
-//        return dictionaryService.updateDictionary(dictionary, dictionaryId);
-//    }
-//
-//    // DELETE
-//    @DeleteMapping("/{id}")
-//    public String deleteDictionaryById(@PathVariable("id") Long dictionaryId) {
-//        dictionaryService.deleteEntryById(dictionaryId);
-//        return "Deleted";
-//    }
+    //
+    // CREATE VIEW
+    //
+
+    // GET
+    @GetMapping("/create")
+    public String getCreateView(Model model) {
+        model.addAttribute("dictionary", new Dictionary());
+        return "create";
+    }
+
+    // POST
+    @PostMapping("/create")
+    public String postCreateView(HttpSession httpSession,
+                                 @Valid @ModelAttribute Dictionary dictionary, BindingResult bindingResult,
+                                 @RequestParam(required = false) String cancel) {
+        if (cancel != null) {
+            return "redirect:/home";
+        }
+        dictionaryService.saveDictionary(dictionary);
+
+        return "create_result";
+    }
 
 }

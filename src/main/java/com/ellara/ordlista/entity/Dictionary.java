@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Dictionary {
     @Id
@@ -20,7 +19,6 @@ public class Dictionary {
 
     @Column(name = "polish")
     private String polishWord;
-
 }
 
 

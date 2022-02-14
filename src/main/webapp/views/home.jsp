@@ -6,12 +6,13 @@
 <section>
     <div>
         <p>Tekniska ordboken</p>
-        <form action = "/dictionary" method = "post">
+        <form action = "/home" method = "post">
             <div>
                 <input type="text" path="query" value="${sessionScope.query}"/>
             </div>
             <div>
                 <input type="submit" value="Szukaj"/>
+                <input type="submit" name = "create" value="Dodaj..."
             </div>
         </form>
     </div>
@@ -22,11 +23,11 @@
                 <td>Szwedzki</td>
                 <td>Polski</td>
             </tr>
-            <form action = "/dictionary" method = "get">
-                <c:forEach var = "entry" items = "${entryList}">
+            <form action = "/home" method = "get">
+                <c:forEach var = "dictionary" items = "${dictionaryList}">
                     <tr>
-                        <td><c:out value = "${entry.swedishWord}"/></td>
-                        <td><c:out value = "${entry.polishWord}"/></td>
+                        <td><c:out value = "${dictionary.swedishWord}"/></td>
+                        <td><c:out value = "${dictionary.polishWord}"/></td>
                     </tr>
                 </c:forEach>
             </form>
