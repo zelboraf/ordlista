@@ -2,41 +2,66 @@ package com.ellara.ordlista.controller;
 
 import com.ellara.ordlista.entity.Dictionary;
 import com.ellara.ordlista.service.DictionaryService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
-@RestController
+@Controller
+@AllArgsConstructor
+@SessionAttributes({"query", "response"})
 public class DictionaryController {
 
     @Autowired
     private DictionaryService dictionaryService;
 
-    // SAVE
-    @PostMapping("/dictionary")
-    public Dictionary saveDictionary(@Valid @RequestBody Dictionary dictionary) {
-        return dictionaryService.saveDictionary(dictionary);
+//    @ModelAttribute("query")
+//    public String setUpQuery() { return "";};
+
+//    @ModelAttribute("response")
+//    public List<Dictionary> setUpResponse() {
+//        return new List<Dictionary>;
+//    }
+
+    // REDIRECT
+    @GetMapping("/")
+    public String getRoot() {
+        return "redirect:/dictionary";
     }
 
-    // READ
+    // GET
     @GetMapping("/dictionary")
-    public List<Dictionary> fetchDictionaryList() {
-        return dictionaryService.fetchDictionaryList();
+    public String getDictionary(Model model) {
+        model.addAttribute("entryList", dictionaryService.fetchDictionaryList());
+        return "dictionary";
     }
 
-    // UPDATE
-    @PutMapping("/dictionary/{id}")
-    public Dictionary updateDictionary(@RequestBody Dictionary dictionary, @PathVariable("id") Long dictionaryId) {
-        return dictionaryService.updateDictionary(dictionary, dictionaryId);
+    // POST
+    @PostMapping("/dictionary")
+    public String saveDictionary(HttpSession httpSession,
+                                     @Valid @RequestBody Dictionary dictionary) {
+        dictionaryService.saveDictionary(dictionary);
+        return "dictionary";
     }
 
-    // DELETE
-    @DeleteMapping("/dictionary/{id}")
-    public String deleteDictionaryById(@PathVariable("id") Long dictionaryId) {
-        dictionaryService.deleteEntryById(dictionaryId);
-        return "Deleted";
-    }
+//    // UPDATE
+//    @PutMapping("/{id}")
+//    public Dictionary updateDictionary(@RequestBody Dictionary dictionary, @PathVariable("id") Long dictionaryId) {
+//        return dictionaryService.updateDictionary(dictionary, dictionaryId);
+//    }
+//
+//    // DELETE
+//    @DeleteMapping("/{id}")
+//    public String deleteDictionaryById(@PathVariable("id") Long dictionaryId) {
+//        dictionaryService.deleteEntryById(dictionaryId);
+//        return "Deleted";
+//    }
 
 }
