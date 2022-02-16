@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface DictionaryService {
 
-    Dictionary saveDictionary(Dictionary dictionary);
+    void saveDictionary(Dictionary dictionary);
 
     List<Dictionary> fetchDictionaryList();
 
     Dictionary updateDictionary(Dictionary dictionary, Long entryId);
 
-    void deleteEntryById(Long entryId);
+    void deleteEntryById(Long id);
+
+    Dictionary fetchDictionaryById(Long id);
 }

@@ -12,7 +12,7 @@ public class Dictionary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private long dictionaryId;
+    private long id;
 
     @Column(name = "swedish")
     private String swedishWord;

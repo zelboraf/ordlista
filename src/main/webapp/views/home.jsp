@@ -4,6 +4,7 @@
 <%@include file="../includes/header.jsp" %>
 
 <section>
+    <p>${sessionScope.message}</p>
     <div>
         <p>Tekniska ordboken</p>
         <form action = "/home" method = "post">
@@ -23,11 +24,12 @@
                 <td>Szwedzki</td>
                 <td>Polski</td>
             </tr>
-            <form action = "/home" method = "get">
+            <form action = "/home" method = "post">
                 <c:forEach var = "dictionary" items = "${dictionaryList}">
                     <tr>
                         <td><c:out value = "${dictionary.swedishWord}"/></td>
                         <td><c:out value = "${dictionary.polishWord}"/></td>
+                        <td><input type = "submit" name = "action" value = "delete${dictionary.id}"/></td>
                     </tr>
                 </c:forEach>
             </form>

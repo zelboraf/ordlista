@@ -14,8 +14,8 @@ public class DictionaryServiceImpl implements DictionaryService{
     private DictionaryRepository dictionaryRepository;
 
     @Override
-    public Dictionary saveDictionary(Dictionary dictionary) {
-        return dictionaryRepository.save(dictionary);
+    public void saveDictionary(Dictionary dictionary) {
+        dictionaryRepository.save(dictionary);
     }
 
     @Override
@@ -33,8 +33,13 @@ public class DictionaryServiceImpl implements DictionaryService{
     }
 
     @Override
-    public void deleteEntryById(Long dictionaryId) {
-        dictionaryRepository.deleteById(dictionaryId);
+    public void deleteEntryById(Long id) {
+        dictionaryRepository.deleteById(id);
 
+    }
+
+    @Override
+    public Dictionary fetchDictionaryById(Long id) {
+        return dictionaryRepository.getById(id);
     }
 }
