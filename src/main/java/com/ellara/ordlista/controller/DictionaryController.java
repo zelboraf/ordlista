@@ -48,10 +48,9 @@ public class DictionaryController {
 
     // POST
     @PostMapping("/home")
-    public String postHomeView(HttpSession httpSession,
+    public String postHomeView(Model model,
                                  @RequestParam(required = false) String create,
                                  @RequestParam(required = false) String action) {
-        log.info("post home view");
         if (create != null) {
             return "create";
         }
@@ -60,6 +59,7 @@ public class DictionaryController {
                 // TODO delete confirmation dialog
                 Long id = Long.valueOf(action.replace("delete", ""));
                 dictionaryService.deleteEntryById(id);
+                model.addAttribute("message", "Hasło zostało usunięte ze słownika");
                 return "redirect:/home";
             }
         }
@@ -79,15 +79,15 @@ public class DictionaryController {
 
     // POST
     @PostMapping("/create")
-    public String postCreateView(HttpSession httpSession,
+    public String postCreateView(Model model,
                                  @Valid @ModelAttribute Dictionary dictionary, BindingResult bindingResult,
                                  @RequestParam(required = false) String cancel) {
         if (cancel != null) {
             return "redirect:/home";
         }
         dictionaryService.saveDictionary(dictionary);
-
-        return "create_result";
+        model.addAttribute("message", "Nowe hasło w słowniku zostało utworzone pomyślnie.");
+        return "redirect:/home";
     }
 
 
