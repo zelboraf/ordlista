@@ -4,37 +4,34 @@
 <%@include file="../includes/header.jsp" %>
 
 <section>
-    <p>${sessionScope.message}</p>
+<form action = "/home" method = "post">
     <div>
-        <p>Tekniska ordboken</p>
-        <form action = "/home" method = "post">
-            <div>
-                <input type="text" path="query" value="${sessionScope.query}"/>
-            </div>
-            <div>
-                <input type="submit" value="Szukaj"/>
-                <input type="submit" name = "create" value="Dodaj..."
-            </div>
-        </form>
+        <h1>Słownik techniczny szwedzko-polski i polsko-szwedzki</h1>
+        <div>
+            <input type = "text" name = "searchString" autofocus = "autofocus" onfocus = "this.value = this.value;" value = "${searchString}"/>
+            <input type = "submit" value = "Szukaj"/>
+            <input type = "submit" name = "create" value="Dodaj..."
+        </div>
+    <p>${sessionScope.message}</p>
     </div>
 
     <div>
         <table>
             <tr>
-                <td>Szwedzki</td>
-                <td>Polski</td>
+                <th>Szwedzki</th>
+                <th>Polski</th>
+                <th>akcja</th>
             </tr>
-            <form action = "/home" method = "post">
-                <c:forEach var = "dictionary" items = "${dictionaryList}">
-                    <tr>
-                        <td><c:out value = "${dictionary.swedishWord}"/></td>
-                        <td><c:out value = "${dictionary.polishWord}"/></td>
-                        <td><input type = "submit" name = "action" value = "delete${dictionary.id}"/></td>
-                    </tr>
-                </c:forEach>
-            </form>
+            <c:forEach var = "dictionary" items = "${dictionaryList}">
+                <tr>
+                    <td><c:out value = "${dictionary.swedishWord}"/></td>
+                    <td><c:out value = "${dictionary.polishWord}"/></td>
+                    <td><input type = "submit" name = "action" value = "delete${dictionary.id}"/></td>
+                </tr>
+            </c:forEach>
         </table>
     </div>
+</form>
 </section>
 
 <%@include file="../includes/footer.jsp" %>

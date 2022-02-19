@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface DictionaryService {
 
-    void saveDictionary(Dictionary dictionary);
+    List<Dictionary> findAllContaining(String searchString);
 
-    List<Dictionary> fetchDictionaryList();
-
-    Dictionary updateDictionary(Dictionary dictionary, Long entryId);
+    Dictionary fetchDictionaryById(Long id);
 
     void deleteEntryById(Long id);
 
-    Dictionary fetchDictionaryById(Long id);
+    void saveDictionary(Dictionary dictionary);
+
+    Dictionary updateDictionary(Dictionary dictionary, Long entryId);
 }

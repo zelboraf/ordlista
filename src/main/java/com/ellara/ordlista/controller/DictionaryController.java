@@ -8,11 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -29,28 +27,29 @@ public class DictionaryController {
         return "empty message";
     }
 
+    @ModelAttribute("searchString")
+    public String setUpSearchString() { return ""; }
+
     // REDIRECT
     @GetMapping("/")
     public String getRoot() {
         return "redirect:/home";
     }
 
-    //
     // HOME VIEW
-    //
 
     // GET
     @GetMapping("/home")
     public String getHomeView(Model model) {
-        model.addAttribute("dictionaryList", dictionaryService.fetchDictionaryList());
         return "home";
     }
 
     // POST
     @PostMapping("/home")
     public String postHomeView(Model model,
-                                 @RequestParam(required = false) String create,
-                                 @RequestParam(required = false) String action) {
+                               @RequestParam(required = false) String searchString,
+                               @RequestParam(required = false) String create,
+                               @RequestParam(required = false) String action) {
         if (create != null) {
             return "create";
         }
@@ -63,12 +62,18 @@ public class DictionaryController {
                 return "redirect:/home";
             }
         }
+        if (!searchString.equals("")) {
+            log.info("searching for >" + searchString + "<");
+            List<Dictionary> dictionaries = dictionaryService.findAllContaining(searchString);
+            model.addAttribute("dictionaryList", dictionaries);
+            model.addAttribute("searchString", searchString);
+            model.addAttribute("message", "Znaleziono " + dictionaries.size() + " rekordów");
+            return "/home";
+        }
         return "home";
     }
 
-    //
     // CREATE VIEW
-    //
 
     // GET
     @GetMapping("/create")
@@ -80,7 +85,7 @@ public class DictionaryController {
     // POST
     @PostMapping("/create")
     public String postCreateView(Model model,
-                                 @Valid @ModelAttribute Dictionary dictionary, BindingResult bindingResult,
+                                 @ModelAttribute Dictionary dictionary,
                                  @RequestParam(required = false) String cancel) {
         if (cancel != null) {
             return "redirect:/home";
@@ -89,6 +94,4 @@ public class DictionaryController {
         model.addAttribute("message", "Nowe hasło w słowniku zostało utworzone pomyślnie.");
         return "redirect:/home";
     }
-
-
 }

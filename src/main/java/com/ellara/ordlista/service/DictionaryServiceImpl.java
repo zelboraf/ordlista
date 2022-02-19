@@ -8,19 +8,29 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DictionaryServiceImpl implements DictionaryService{
+public class DictionaryServiceImpl implements DictionaryService {
 
     @Autowired
     private DictionaryRepository dictionaryRepository;
 
     @Override
-    public void saveDictionary(Dictionary dictionary) {
-        dictionaryRepository.save(dictionary);
+    public List<Dictionary> findAllContaining(String searchString) {
+        return dictionaryRepository.findAllContaining(searchString);
     }
 
     @Override
-    public List<Dictionary> fetchDictionaryList() {
-        return (List<Dictionary>) dictionaryRepository.findAll();
+    public Dictionary fetchDictionaryById(Long id) {
+        return dictionaryRepository.getById(id);
+    }
+
+    @Override
+    public void deleteEntryById(Long id) {
+        dictionaryRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveDictionary(Dictionary dictionary) {
+        dictionaryRepository.save(dictionary);
     }
 
     @Override
@@ -30,16 +40,5 @@ public class DictionaryServiceImpl implements DictionaryService{
         // TODO: update conditions here
 
         return dictionaryRepository.save(dictDB);
-    }
-
-    @Override
-    public void deleteEntryById(Long id) {
-        dictionaryRepository.deleteById(id);
-
-    }
-
-    @Override
-    public Dictionary fetchDictionaryById(Long id) {
-        return dictionaryRepository.getById(id);
     }
 }
