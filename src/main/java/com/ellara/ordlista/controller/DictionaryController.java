@@ -14,7 +14,6 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@SessionAttributes({"message"})
 public class DictionaryController {
 
     private static final Logger log = LogManager.getLogger(DictionaryController.class);
@@ -29,6 +28,9 @@ public class DictionaryController {
 
     @ModelAttribute("searchString")
     public String setUpSearchString() { return ""; }
+
+    @ModelAttribute("selectedDictionary")
+    public String setUpDictionarySelector() { return "both"; }
 
     // REDIRECT
     @GetMapping("/")
@@ -48,6 +50,7 @@ public class DictionaryController {
     @PostMapping("/home")
     public String postHomeView(Model model,
                                @RequestParam(required = false) String searchString,
+                               @RequestParam String selectedDictionary,
                                @RequestParam(required = false) String create,
                                @RequestParam(required = false) String action) {
         if (create != null) {
@@ -64,8 +67,19 @@ public class DictionaryController {
         }
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
-            List<Dictionary> dictionaries = dictionaryService.findAllContaining(searchString);
+            List<Dictionary> dictionaries;
+            switch (selectedDictionary) {
+                case "SE":
+                    dictionaries = dictionaryService.findAllContainingSwedish(searchString);
+                    break;
+                case "PL":
+                    dictionaries = dictionaryService.findAllContainingPolish(searchString);
+                    break;
+                default:
+                    dictionaries = dictionaryService.findAllContaining(searchString);
+            }
             model.addAttribute("dictionaryList", dictionaries);
+            model.addAttribute("selectedDictionary", selectedDictionary);
             model.addAttribute("searchString", searchString);
             model.addAttribute("message", "Znaleziono " + dictionaries.size() + " rekordów");
             return "/home";

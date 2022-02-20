@@ -8,6 +8,10 @@ public interface DictionaryService {
 
     List<Dictionary> findAllContaining(String searchString);
 
+    List<Dictionary> findAllContainingSwedish(String searchString);
+
+    List<Dictionary> findAllContainingPolish(String searchString);
+
     Dictionary fetchDictionaryById(Long id);
 
     void deleteEntryById(Long id);

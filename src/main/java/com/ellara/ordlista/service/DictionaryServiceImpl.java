@@ -19,6 +19,16 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    public List<Dictionary> findAllContainingSwedish(String searchString) {
+        return dictionaryRepository.findAllContainingSwedish(searchString);
+    }
+
+    @Override
+    public List<Dictionary> findAllContainingPolish(String searchString) {
+        return dictionaryRepository.findAllContainingPolish(searchString);
+    }
+
+    @Override
     public Dictionary fetchDictionaryById(Long id) {
         return dictionaryRepository.getById(id);
     }
