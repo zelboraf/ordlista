@@ -6,7 +6,7 @@
 <section>
 <form action = "/home" method = "post">
     <div>
-        <h1>Słownik techniczny szwedzko-polski i polsko-szwedzki</h1>
+        <h1>Technical dictionary SE-PL</h1>
         <div>
             <input type = "text" name = "searchString" autofocus = "autofocus" value = "${searchString}" onfocus = "this.value = this.value;"/>
             <input type = "submit" value = "Search"/>
@@ -36,15 +36,15 @@
     <div>
         <table>
             <tr>
-                <th>Szwedzki</th>
-                <th>Polski</th>
-                <th>akcja</th>
+                <th>Szwedish</th>
+                <th>Polish</th>
+                <th>action</th>
             </tr>
             <c:forEach var = "dictionary" items = "${dictionaryList}">
                 <tr>
                     <td><c:out value = "${dictionary.swedishWord}"/></td>
                     <td><c:out value = "${dictionary.polishWord}"/></td>
-                    <td><input type = "submit" name = "action" value = "delete${dictionary.id}"/></td>
+                    <td><a href="/delete/${dictionary.id}">delete</input></td>
                 </tr>
             </c:forEach>
         </table>

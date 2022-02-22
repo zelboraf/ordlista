@@ -105,7 +105,16 @@ public class DictionaryController {
             return "redirect:/home";
         }
         dictionaryService.saveDictionary(dictionary);
-        model.addAttribute("message", "Nowe hasło w słowniku zostało utworzone pomyślnie.");
+        model.addAttribute("message", "Created.");
         return "redirect:/home";
+    }
+
+    // DELETE
+
+    @GetMapping("/delete/{id}")
+    public String getDeleteView(@PathVariable Long id, Model model) {
+        dictionaryService.deleteEntryById(id);
+        model.addAttribute("message", "Deleted from dictionary");
+        return "/home";
     }
 }
