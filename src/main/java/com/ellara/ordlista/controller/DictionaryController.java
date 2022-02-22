@@ -51,19 +51,10 @@ public class DictionaryController {
     public String postHomeView(Model model,
                                @RequestParam(required = false) String searchString,
                                @RequestParam String selectedDictionary,
-                               @RequestParam(required = false) String create,
-                               @RequestParam(required = false) String action) {
+                               @RequestParam(required = false) String create) {
         if (create != null) {
+            model.addAttribute("searchString", searchString);
             return "create";
-        }
-        if (action != null) {
-            if (action.contains("delete")) {
-                // TODO delete confirmation dialog
-                Long id = Long.valueOf(action.replace("delete", ""));
-                dictionaryService.deleteEntryById(id);
-                model.addAttribute("message", "Hasło zostało usunięte ze słownika");
-                return "redirect:/home";
-            }
         }
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
@@ -81,7 +72,7 @@ public class DictionaryController {
             model.addAttribute("dictionaryList", dictionaries);
             model.addAttribute("selectedDictionary", selectedDictionary);
             model.addAttribute("searchString", searchString);
-            model.addAttribute("message", "Znaleziono " + dictionaries.size() + " rekordów");
+            model.addAttribute("message", "Found " + dictionaries.size() + " records.");
             return "/home";
         }
         return "home";
@@ -91,8 +82,10 @@ public class DictionaryController {
 
     // GET
     @GetMapping("/create")
-    public String getCreateView(Model model) {
+    public String getCreateView(Model model,
+                                @RequestParam(required = false) String searchString) {
         model.addAttribute("dictionary", new Dictionary());
+        model.addAttribute("searchString", searchString);
         return "create";
     }
 
@@ -105,16 +98,17 @@ public class DictionaryController {
             return "redirect:/home";
         }
         dictionaryService.saveDictionary(dictionary);
-        model.addAttribute("message", "Created.");
-        return "redirect:/home";
+        model.addAttribute("message", "Created new record.");
+        return "/home";
     }
 
     // DELETE
 
     @GetMapping("/delete/{id}")
     public String getDeleteView(@PathVariable Long id, Model model) {
+        // TODO delete confirmation dialog
         dictionaryService.deleteEntryById(id);
-        model.addAttribute("message", "Deleted from dictionary");
+        model.addAttribute("message", "Record deleted from dictionary.");
         return "/home";
     }
 }

@@ -5,19 +5,21 @@
 
 <section>
     <div>
-        <p>Utwórz nowe hasło w słowniku:</p>
+        <p>Create new record:</p>
         <form action = "/create" method = "post">
             <div>
                 <table>
                     <tr>
-                        <td>Szwedzki</td>
-                        <td>Polski</td>
+                        <th>Szwedzki</th>
+                        <th>Polski</th>
                     </tr>
                     <tr>
-                        <input type="text" name = "swedishWord"/>
-                    </tr>
-                    <tr>
-                        <input type="text" name = "polishWord"/>
+                        <td>
+                            <input type="text" name = "swedishWord" autofocus = "autofocus" value = "${searchString}" autocomplete = "off"/>
+                        </td>
+                        <td>
+                            <input type="text" name = "polishWord" autocomplete = "off"/>
+                        </td>
                     </tr>
                 </table>
             </div>
