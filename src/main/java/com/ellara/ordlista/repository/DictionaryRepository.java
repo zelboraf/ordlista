@@ -18,4 +18,7 @@ public interface DictionaryRepository extends JpaRepository<Dictionary, Long> {
 
     @Query(value = "SELECT * FROM dictionary WHERE polish LIKE %?1%", nativeQuery = true)
     List<Dictionary> findAllContainingPolish(String searchString);
+
+    @Query(value = "SELECT COUNT(*) FROM dictionary", nativeQuery = true)
+    String countAll();
 }

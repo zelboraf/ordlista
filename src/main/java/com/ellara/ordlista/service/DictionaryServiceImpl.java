@@ -51,4 +51,9 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         return dictionaryRepository.save(dictDB);
     }
+
+    @Override
+    public String countAll() {
+        return dictionaryRepository.countAll();
+    }
 }

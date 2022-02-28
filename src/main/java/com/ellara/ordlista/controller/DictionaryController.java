@@ -23,14 +23,14 @@ public class DictionaryController {
 
     @ModelAttribute("message")
     public String setUpMessage() {
-        return "empty message";
+        return dictionaryService.countAll() + " dictionary entries";
     }
 
     @ModelAttribute("searchString")
     public String setUpSearchString() { return ""; }
 
     @ModelAttribute("selectedDictionary")
-    public String setUpDictionarySelector() { return "both"; }
+    public String setUpDictionarySelector() { return "SE"; }
 
     // REDIRECT
     @GetMapping("/")
