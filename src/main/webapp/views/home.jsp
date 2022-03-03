@@ -23,12 +23,6 @@
                 />
                 PL
             </label>
-            <label>
-                <input type = "radio" name = "selectedDictionary" value = "both"
-                    <c:if test="${selectedDictionary == 'both'}">checked</c:if>
-                />
-                both
-            </label>
         </div>
     <p>${message}</p>
     </div>
@@ -36,7 +30,7 @@
     <div>
         <table>
             <tr>
-                <th>Szwedish</th>
+                <th>Swedish</th>
                 <th>Polish</th>
                 <th>action</th>
             </tr>

@@ -59,15 +59,10 @@ public class DictionaryController {
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
             List<Dictionary> dictionaries;
-            switch (selectedDictionary) {
-                case "SE":
-                    dictionaries = dictionaryService.findAllContainingSwedish(searchString);
-                    break;
-                case "PL":
-                    dictionaries = dictionaryService.findAllContainingPolish(searchString);
-                    break;
-                default:
-                    dictionaries = dictionaryService.findAllContaining(searchString);
+            if (selectedDictionary.equals("SE")) {
+                dictionaries = dictionaryService.findAllContainingSwedish(searchString);
+            } else {
+                dictionaries = dictionaryService.findAllContainingPolish(searchString);
             }
             model.addAttribute("dictionaryList", dictionaries);
             model.addAttribute("selectedDictionary", selectedDictionary);

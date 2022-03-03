@@ -5,4 +5,5 @@ table, th, td {
 }
 input {
   padding: 10px;
+  font-size: large;
 }
