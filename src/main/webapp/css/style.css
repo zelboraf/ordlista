@@ -5,5 +5,7 @@ table, th, td {
 }
 input {
   padding: 10px;
-  font-size: large;
+}
+input[type="text"] {
+  font-size: x-large;
 }

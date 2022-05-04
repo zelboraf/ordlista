@@ -15,10 +15,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" name = "swedishWord" autofocus = "autofocus" value = "${searchString}" autocomplete = "off"/>
+                            <input type="text" name = "swedishWord" autocomplete = "off" value="${dictionary.swedishWord}" autofocus = "autofocus"/>
                         </td>
                         <td>
-                            <input type="text" name = "polishWord" autocomplete = "off"/>
+                            <input type="text" name = "polishWord" autocomplete = "off" value = "${dictionary.polishWord}"/>
                         </td>
                     </tr>
                 </table>

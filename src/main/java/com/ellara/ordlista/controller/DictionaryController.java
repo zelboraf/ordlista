@@ -53,8 +53,14 @@ public class DictionaryController {
                                @RequestParam String selectedDictionary,
                                @RequestParam(required = false) String create) {
         if (create != null) {
-            model.addAttribute("searchString", searchString);
-            return "create";
+            Dictionary dictionary = new Dictionary();
+            if (selectedDictionary.equals("SE")) {
+                dictionary.setSwedishWord(searchString);
+            } else {
+                dictionary.setPolishWord(searchString);
+            }
+            model.addAttribute(dictionary);
+            return "update";
         }
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
@@ -73,25 +79,23 @@ public class DictionaryController {
         return "home";
     }
 
-    // CREATE VIEW
+    // UPDATE VIEW
 
-    // GET
-    @GetMapping("/create")
+    @GetMapping("/update")
     public String getCreateView(Model model,
-                                @RequestParam(required = false) String searchString) {
-        model.addAttribute("dictionary", new Dictionary());
-        model.addAttribute("searchString", searchString);
-        return "create";
+                                Dictionary dictionary) {
+        model.addAttribute("dictionary", dictionary);
+        return "update";
     }
 
-    // POST
-    @PostMapping("/create")
+    @PostMapping("/update")
     public String postCreateView(Model model,
                                  @ModelAttribute Dictionary dictionary,
                                  @RequestParam(required = false) String cancel) {
         if (cancel != null) {
             return "redirect:/home";
         }
+        // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
         model.addAttribute("message", "Created new record.");
         return "/home";
@@ -101,7 +105,7 @@ public class DictionaryController {
 
     @GetMapping("/delete/{id}")
     public String getDeleteView(@PathVariable Long id, Model model) {
-        // TODO delete confirmation dialog
+        // TODO: delete confirmation dialog
         dictionaryService.deleteEntryById(id);
         model.addAttribute("message", "Record deleted from dictionary.");
         return "/home";
