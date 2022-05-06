@@ -38,7 +38,10 @@
                 <tr>
                     <td><c:out value = "${dictionary.swedishWord}"/></td>
                     <td><c:out value = "${dictionary.polishWord}"/></td>
-                    <td><a href="/delete/${dictionary.id}">delete</input></td>
+                    <td>
+                        <a href="/delete/${dictionary.id}">delete</input>
+                        <a href="/edit/${dictionary.id}">edit</input>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

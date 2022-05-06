@@ -60,7 +60,7 @@ public class DictionaryController {
                 dictionary.setPolishWord(searchString);
             }
             model.addAttribute(dictionary);
-            return "update";
+            return "create";
         }
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
@@ -76,19 +76,19 @@ public class DictionaryController {
             model.addAttribute("message", "Found " + dictionaries.size() + " records.");
             return "/home";
         }
-        return "home";
+        return "home.jsp";
     }
 
-    // UPDATE VIEW
+    // CREATE
 
-    @GetMapping("/update")
+    @GetMapping("/create")
     public String getCreateView(Model model,
                                 Dictionary dictionary) {
         model.addAttribute("dictionary", dictionary);
-        return "update";
+        return "create";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/create")
     public String postCreateView(Model model,
                                  @ModelAttribute Dictionary dictionary,
                                  @RequestParam(required = false) String cancel) {
@@ -98,6 +98,28 @@ public class DictionaryController {
         // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
         model.addAttribute("message", "Created new record.");
+        return "/home";
+    }
+
+    // EDIT
+
+    @GetMapping("/edit/{id}")
+    public String getEditView(Model model, @PathVariable Long id) {
+        Dictionary dictionary = dictionaryService.fetchDictionaryById(id);
+        model.addAttribute("dictionary", dictionary);
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String postEditView(Model model,
+                                 @ModelAttribute Dictionary dictionary,
+                                 @RequestParam(required = false) String cancel) {
+        if (cancel != null) {
+            return "redirect:/home";
+        }
+        // TODO: validate input before save
+        dictionaryService.saveDictionary(dictionary);
+        model.addAttribute("message", "Record has been saved.");
         return "/home";
     }
 
