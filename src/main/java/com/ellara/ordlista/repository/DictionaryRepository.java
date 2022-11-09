@@ -10,10 +10,7 @@ import java.util.List;
 @Repository
 public interface DictionaryRepository extends JpaRepository<Dictionary, Long> {
 
-    @Query(value = "SELECT * FROM dictionary WHERE polish LIKE %?1% OR swedish LIKE %?1%", nativeQuery = true)
-    List<Dictionary> findAllContaining(String searchString);
-
-    @Query(value = "SELECT * FROM dictionary WHERE swedish LIKE %?1%", nativeQuery = true)
+    @Query(value = "SELECT * FROM dictionary WHERE replace(swedish, '|', '') LIKE %?1%", nativeQuery = true)
     List<Dictionary> findAllContainingSwedish(String swedishWord);
 
     @Query(value = "SELECT * FROM dictionary WHERE polish LIKE %?1%", nativeQuery = true)

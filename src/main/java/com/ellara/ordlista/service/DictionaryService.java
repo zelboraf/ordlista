@@ -16,7 +16,5 @@ public interface DictionaryService {
 
     void saveDictionary(Dictionary dictionary);
 
-    Dictionary updateDictionary(Dictionary dictionary, Long entryId);
-
     String countAll();
 }

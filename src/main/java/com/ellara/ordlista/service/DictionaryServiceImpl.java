@@ -39,15 +39,6 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public Dictionary updateDictionary(Dictionary dictionary, Long dictionaryId) {
-        Dictionary dictDB = dictionaryRepository.findById(dictionaryId).get();
-
-        // TODO: update conditions here
-
-        return dictionaryRepository.save(dictDB);
-    }
-
-    @Override
     public String countAll() {
         return dictionaryRepository.countAll();
     }

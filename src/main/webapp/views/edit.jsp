@@ -5,8 +5,8 @@
 
 <section>
     <div>
-        <p>Create new record:</p>
-        <form action = "/create" method = "post">
+        <p>Edit a record:</p>
+        <form action = "/edit" method = "post">
             <div>
                 <table>
                     <tr>
@@ -25,8 +25,8 @@
                 </table>
             </div>
             <div>
-                <input type="submit" value="Dodaj"/>
-                <input type="submit" name = "cancel" value="Anuluj"/>
+                <input type="submit" value="Save"/>
+                <input type="submit" name = "cancel" value="Cancel"/>
             </div>
         </form>
     </div>

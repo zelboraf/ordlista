@@ -13,22 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@SessionAttributes("searchString")
 @AllArgsConstructor
 public class DictionaryController {
 
     private static final Logger log = LogManager.getLogger(DictionaryController.class);
-
     @Autowired
     private DictionaryService dictionaryService;
-
     @ModelAttribute("message")
     public String setUpMessage() {
         return dictionaryService.countAll() + " dictionary entries";
     }
-
     @ModelAttribute("searchString")
     public String setUpSearchString() { return ""; }
-
     @ModelAttribute("selectedDictionary")
     public String setUpDictionarySelector() { return "SE"; }
 
@@ -40,13 +37,25 @@ public class DictionaryController {
 
     // HOME VIEW
 
-    // GET
     @GetMapping("/home")
-    public String getHomeView(Model model) {
+    public String getHomeView(Model model,
+                              @ModelAttribute("searchString") String searchString,
+                              @ModelAttribute("selectedDictionary") String selectedDictionary) {
+        if (!searchString.equals("")) {
+            log.info("searching for >" + searchString + "<");
+            List<Dictionary> dictionaries;
+            if (selectedDictionary.equals("SE")) {
+                dictionaries = dictionaryService.findAllContainingSwedish(searchString);
+            } else {
+                dictionaries = dictionaryService.findAllContainingPolish(searchString);
+            }
+            model.addAttribute("dictionaryList", dictionaries);
+            model.addAttribute("selectedDictionary", selectedDictionary);
+            model.addAttribute("searchString", searchString);
+        }
         return "home";
     }
 
-    // POST
     @PostMapping("/home")
     public String postHomeView(Model model,
                                @RequestParam(required = false) String searchString,
@@ -60,7 +69,7 @@ public class DictionaryController {
                 dictionary.setPolishWord(searchString);
             }
             model.addAttribute(dictionary);
-            return "create";
+            return "edit";
         }
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
@@ -73,31 +82,7 @@ public class DictionaryController {
             model.addAttribute("dictionaryList", dictionaries);
             model.addAttribute("selectedDictionary", selectedDictionary);
             model.addAttribute("searchString", searchString);
-            model.addAttribute("message", "Found " + dictionaries.size() + " records.");
-            return "/home";
         }
-        return "home.jsp";
-    }
-
-    // CREATE
-
-    @GetMapping("/create")
-    public String getCreateView(Model model,
-                                Dictionary dictionary) {
-        model.addAttribute("dictionary", dictionary);
-        return "create";
-    }
-
-    @PostMapping("/create")
-    public String postCreateView(Model model,
-                                 @ModelAttribute Dictionary dictionary,
-                                 @RequestParam(required = false) String cancel) {
-        if (cancel != null) {
-            return "redirect:/home";
-        }
-        // TODO: validate input before save
-        dictionaryService.saveDictionary(dictionary);
-        model.addAttribute("message", "Created new record.");
         return "/home";
     }
 
@@ -119,16 +104,17 @@ public class DictionaryController {
         }
         // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
-        model.addAttribute("message", "Record has been saved.");
+        model.addAttribute("message", "Record has been updated.");
         return "/home";
     }
 
     // DELETE
 
     @GetMapping("/delete/{id}")
-    public String getDeleteView(@PathVariable Long id, Model model) {
+    public String getDeleteView(@PathVariable Long id, Model model, String searchString) {
         // TODO: delete confirmation dialog
         dictionaryService.deleteEntryById(id);
+        model.addAttribute("searchString", searchString);
         model.addAttribute("message", "Record deleted from dictionary.");
         return "/home";
     }
