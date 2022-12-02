@@ -12,14 +12,14 @@
             <input type = "submit" value = "Search"/>
             <input type = "submit" name = "create" value="Add new..."/>
             <label>
-                <input type = "radio" name = "selectedDictionary" value = "SE"
-                    <c:if test="${selectedDictionary == 'SE'}">checked</c:if>
+                <input type = "radio" name = "dictionaryLang" value = "SE"
+                    <c:if test="${dictionaryLang == 'SE'}">checked</c:if>
                 />
                 SE
             </label>
             <label>
-                <input type = "radio" name = "selectedDictionary" value = "PL"
-                    <c:if test="${selectedDictionary == 'PL'}">checked</c:if>
+                <input type = "radio" name = "dictionaryLang" value = "PL"
+                    <c:if test="${dictionaryLang == 'PL'}">checked</c:if>
                 />
                 PL
             </label>

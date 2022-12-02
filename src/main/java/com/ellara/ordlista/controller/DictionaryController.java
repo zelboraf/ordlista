@@ -25,9 +25,9 @@ public class DictionaryController {
         return dictionaryService.countAll() + " dictionary entries";
     }
     @ModelAttribute("searchString")
-    public String setUpSearchString() { return ""; }
-    @ModelAttribute("selectedDictionary")
-    public String setUpDictionarySelector() { return "SE"; }
+    public String setUpSearchString() { return new String(""); }
+    @ModelAttribute("dictionaryLang")
+    public String setUpDictionaryLang() { return new String("SE"); }
 
     // REDIRECT
     @GetMapping("/")
@@ -36,58 +36,34 @@ public class DictionaryController {
     }
 
     // HOME VIEW
-
     @GetMapping("/home")
     public String getHomeView(Model model,
                               @ModelAttribute("searchString") String searchString,
-                              @ModelAttribute("selectedDictionary") String selectedDictionary) {
-        if (!searchString.equals("")) {
-            log.info("searching for >" + searchString + "<");
-            List<Dictionary> dictionaries;
-            if (selectedDictionary.equals("SE")) {
-                dictionaries = dictionaryService.findAllContainingSwedish(searchString);
-            } else {
-                dictionaries = dictionaryService.findAllContainingPolish(searchString);
-            }
-            model.addAttribute("dictionaryList", dictionaries);
-            model.addAttribute("selectedDictionary", selectedDictionary);
-            model.addAttribute("searchString", searchString);
-        }
-        return "home";
+                              @ModelAttribute("dictionaryLang") String dictionaryLang) {
+        log.info("GET");
+        setHomeView(searchString, dictionaryLang, model);
+        return "/home";
     }
+
+
 
     @PostMapping("/home")
     public String postHomeView(Model model,
-                               @RequestParam(required = false) String searchString,
-                               @RequestParam String selectedDictionary,
+                               @RequestParam String searchString,
+                               @RequestParam String dictionaryLang,
                                @RequestParam(required = false) String create) {
+        log.info("POST");
         if (create != null) {
             Dictionary dictionary = new Dictionary();
-            if (selectedDictionary.equals("SE")) {
-                dictionary.setSwedishWord(searchString);
-            } else {
-                dictionary.setPolishWord(searchString);
-            }
+            setDictionaryLang(searchString, dictionaryLang, dictionary);
             model.addAttribute(dictionary);
             return "edit";
         }
-        if (!searchString.equals("")) {
-            log.info("searching for >" + searchString + "<");
-            List<Dictionary> dictionaries;
-            if (selectedDictionary.equals("SE")) {
-                dictionaries = dictionaryService.findAllContainingSwedish(searchString);
-            } else {
-                dictionaries = dictionaryService.findAllContainingPolish(searchString);
-            }
-            model.addAttribute("dictionaryList", dictionaries);
-            model.addAttribute("selectedDictionary", selectedDictionary);
-            model.addAttribute("searchString", searchString);
-        }
+        setHomeView(searchString, dictionaryLang, model);
         return "/home";
     }
 
     // EDIT
-
     @GetMapping("/edit/{id}")
     public String getEditView(Model model, @PathVariable Long id) {
         Dictionary dictionary = dictionaryService.fetchDictionaryById(id);
@@ -97,25 +73,60 @@ public class DictionaryController {
 
     @PostMapping("/edit")
     public String postEditView(Model model,
-                                 @ModelAttribute Dictionary dictionary,
-                                 @RequestParam(required = false) String cancel) {
+                               @ModelAttribute Dictionary dictionary,
+                               @RequestParam(required = false) String cancel) {
         if (cancel != null) {
             return "redirect:/home";
         }
         // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
         model.addAttribute("message", "Record has been updated.");
-        return "/home";
+        return "redirect:/home";
     }
 
     // DELETE
-
     @GetMapping("/delete/{id}")
     public String getDeleteView(@PathVariable Long id, Model model, String searchString) {
         // TODO: delete confirmation dialog
         dictionaryService.deleteEntryById(id);
         model.addAttribute("searchString", searchString);
         model.addAttribute("message", "Record deleted from dictionary.");
-        return "/home";
+        return "redirect:/home";
     }
+
+    // METHODS
+
+    private void setHomeView(String searchString, String dictionaryLang, Model model) {
+        if (!searchString.equals("")) {
+            log.info("searching for >" + searchString + "<");
+            List<Dictionary> dictionaryList;
+            dictionaryList = getDictionaryList(searchString, dictionaryLang);
+            addModelAttributes(model, dictionaryList, dictionaryLang, searchString);
+        }
+    }
+
+    private List<Dictionary> getDictionaryList(String searchString, String dictionaryLang) {
+        List<Dictionary> dictionaries;
+        if (dictionaryLang.equals("SE")) {
+            dictionaries = dictionaryService.findAllContainingSwedish(searchString);
+        } else {
+            dictionaries = dictionaryService.findAllContainingPolish(searchString);
+        }
+        return dictionaries;
+    }
+
+    private void addModelAttributes(Model model, List<Dictionary> dictionaryList, String dictionaryLang, String searchString) {
+        model.addAttribute("dictionaryList", dictionaryList);
+        model.addAttribute("dictionaryLang", dictionaryLang);
+        model.addAttribute("searchString", searchString);
+    }
+
+    private void setDictionaryLang(String searchString, String dictionaryLang, Dictionary dictionary) {
+        if (dictionaryLang.equals("SE")) {
+            dictionary.setSwedishWord(searchString);
+        } else {
+            dictionary.setPolishWord(searchString);
+        }
+    }
+
 }
