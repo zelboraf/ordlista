@@ -39,13 +39,12 @@ public class DictionaryController {
     @GetMapping("/home")
     public String getHomeView(Model model,
                               @ModelAttribute("searchString") String searchString,
-                              @ModelAttribute("dictionaryLang") String dictionaryLang) {
+                              @ModelAttribute("dictionaryLang") String dictionaryLang,
+                              @ModelAttribute("swedishWord") String swedishWord) {
         log.info("GET");
-        setHomeView(searchString, dictionaryLang, model);
+        setHomeView(model, searchString, dictionaryLang);
         return "/home";
     }
-
-
 
     @PostMapping("/home")
     public String postHomeView(Model model,
@@ -59,7 +58,7 @@ public class DictionaryController {
             model.addAttribute(dictionary);
             return "edit";
         }
-        setHomeView(searchString, dictionaryLang, model);
+        setHomeView(model, searchString, dictionaryLang);
         return "/home";
     }
 
@@ -80,6 +79,7 @@ public class DictionaryController {
         }
         // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
+        updateSearchString(model, dictionary);
         model.addAttribute("message", "Record has been updated.");
         return "redirect:/home";
     }
@@ -96,7 +96,7 @@ public class DictionaryController {
 
     // METHODS
 
-    private void setHomeView(String searchString, String dictionaryLang, Model model) {
+    private void setHomeView(Model model, String searchString, String dictionaryLang) {
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
             List<Dictionary> dictionaryList;
@@ -127,6 +127,11 @@ public class DictionaryController {
         } else {
             dictionary.setPolishWord(searchString);
         }
+    }
+
+    private void updateSearchString(Model model, Dictionary dictionary) {
+        String[] splitSwedishWord = dictionary.getSwedishWord().split("\\s+");
+        model.addAttribute("searchString", splitSwedishWord[0]);
     }
 
 }

@@ -10,12 +10,12 @@
             <div>
                 <table>
                     <tr>
-                        <th>Szwedzki</th>
-                        <th>Polski</th>
+                        <th>Swedish</th>
+                        <th>Polish</th>
                     </tr>
                     <tr>
                         <td>
-                            <input type = "text" name = "swedishWord" autocomplete = "off" value="${dictionary.swedishWord}" autofocus = "autofocus"/>
+                            <input type = "text" name = "swedishWord" autocomplete = "off" value = "${dictionary.swedishWord}" autofocus = "autofocus"/>
                         </td>
                         <td>
                             <input type = "text" name = "polishWord" autocomplete = "off" value = "${dictionary.polishWord}"/>
