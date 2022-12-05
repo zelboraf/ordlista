@@ -28,13 +28,27 @@
     </div>
 
     <div>
+        <c:out value="${'starting with:'}"/>
         <table>
             <tr>
                 <th>Swedish</th>
                 <th>Polish</th>
                 <th>action</th>
             </tr>
-            <c:forEach var = "dictionary" items = "${dictionaryList}">
+            <c:forEach var = "dictionary" items = "${dictionaryStartingWith}">
+                <tr>
+                    <td><c:out value = "${dictionary.swedishWord}"/></td>
+                    <td><c:out value = "${dictionary.polishWord}"/></td>
+                    <td>
+                        <a href="/delete/${dictionary.id}">delete</input>
+                        <a href="/edit/${dictionary.id}">edit</input>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+        <c:out value="${'containing:'}"/></tr>
+        <table>
+            <c:forEach var = "dictionary" items = "${dictionaryContaining}">
                 <tr>
                     <td><c:out value = "${dictionary.swedishWord}"/></td>
                     <td><c:out value = "${dictionary.polishWord}"/></td>

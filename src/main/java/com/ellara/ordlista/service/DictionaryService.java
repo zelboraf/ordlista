@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface DictionaryService {
 
-    List<Dictionary> findAllContainingSwedish(String searchString);
+    List<Dictionary> findAllSwedishStartingWith(String searchString);
 
-    List<Dictionary> findAllContainingPolish(String searchString);
+    List<Dictionary> findAllPolishStartingWith(String searchString);
+
+    List<Dictionary> findAllSwedishContaining(String searchString);
+
+    List<Dictionary> findAllPolishContaining(String searchString);
 
     Dictionary fetchDictionaryById(Long id);
 

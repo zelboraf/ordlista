@@ -99,24 +99,36 @@ public class DictionaryController {
     private void setHomeView(Model model, String searchString, String dictionaryLang) {
         if (!searchString.equals("")) {
             log.info("searching for >" + searchString + "<");
-            List<Dictionary> dictionaryList;
-            dictionaryList = getDictionaryList(searchString, dictionaryLang);
-            addModelAttributes(model, dictionaryList, dictionaryLang, searchString);
+            List<Dictionary> dictionaryStartingWith = getDictionaryStartingWith(searchString, dictionaryLang);
+            List<Dictionary> dictionaryContaining = getDictionaryContaining(searchString, dictionaryLang);
+            dictionaryContaining.removeAll(dictionaryStartingWith);
+            addModelAttributes(model, dictionaryStartingWith, dictionaryContaining, dictionaryLang, searchString);
         }
     }
 
-    private List<Dictionary> getDictionaryList(String searchString, String dictionaryLang) {
-        List<Dictionary> dictionaries;
+    private List<Dictionary> getDictionaryStartingWith(String searchString, String dictionaryLang) {
+        List<Dictionary> dictionary;
         if (dictionaryLang.equals("SE")) {
-            dictionaries = dictionaryService.findAllContainingSwedish(searchString);
+            dictionary = dictionaryService.findAllSwedishStartingWith(searchString);
         } else {
-            dictionaries = dictionaryService.findAllContainingPolish(searchString);
+            dictionary = dictionaryService.findAllPolishStartingWith(searchString);
         }
-        return dictionaries;
+        return dictionary;
     }
 
-    private void addModelAttributes(Model model, List<Dictionary> dictionaryList, String dictionaryLang, String searchString) {
-        model.addAttribute("dictionaryList", dictionaryList);
+    private List<Dictionary> getDictionaryContaining(String searchString, String dictionaryLang) {
+        List<Dictionary> dictionary;
+        if (dictionaryLang.equals("SE")) {
+            dictionary = dictionaryService.findAllSwedishContaining(searchString);
+        } else {
+            dictionary = dictionaryService.findAllPolishContaining(searchString);
+        }
+        return dictionary;
+    }
+
+    private void addModelAttributes(Model model, List<Dictionary> dictionaryStartingWith, List<Dictionary> dictionaryContaining, String dictionaryLang, String searchString) {
+        model.addAttribute("dictionaryStartingWith", dictionaryStartingWith);
+        model.addAttribute("dictionaryContaining", dictionaryContaining);
         model.addAttribute("dictionaryLang", dictionaryLang);
         model.addAttribute("searchString", searchString);
     }
