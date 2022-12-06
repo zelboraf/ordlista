@@ -4,11 +4,11 @@
 <%@include file="../includes/header.jsp" %>
 
 <section>
-<form action = "/home" method = "post">
+<form action = "/home" method = "post" name = "form">
     <div>
         <h1>Technical dictionary SE-PL</h1>
         <div>
-            <input type = "text" name = "searchString" autofocus = "autofocus" value = "${searchString}" autocomplete = "off" onfocus = "this.value = this.value;"/>
+            <input type = "text" name = "searchString" autofocus = "autofocus" value = "${searchString}" autocomplete = "off"/>
             <input type = "submit" value = "Search"/>
             <input type = "submit" name = "create" value="Add new..."/>
             <label>
@@ -62,5 +62,17 @@
     </div>
 </form>
 </section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    var inputTxt = $('input[name="searchString"]');
+    var tmpStr = inputTxt.val();
+    $(inputTxt).val("").focus().val(tmpStr);    // keep cursor at end of line
+    $(inputTxt).on('input', function(){
+        $('form').submit();    // auto submit form on changes
+    });
+});
+</script>
 
 <%@include file="../includes/footer.jsp" %>
