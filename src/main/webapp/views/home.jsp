@@ -69,8 +69,9 @@ $(document).ready(function(){
     var inputTxt = $('input[name="searchString"]');
     var tmpStr = inputTxt.val();
     $(inputTxt).val("").focus().val(tmpStr);    // keep cursor at end of line
-    $(inputTxt).on('input', function(){
-        $('form').submit();    // auto submit form on changes
+    $(inputTxt).on('input', function(){         // auto submit form on changes
+        if (inputTxt.val().length > 2)
+            $('form').submit();
     });
 });
 </script>
