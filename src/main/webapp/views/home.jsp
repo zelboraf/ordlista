@@ -9,7 +9,6 @@
         <h1>Technical dictionary SE-PL</h1>
         <div>
             <input type = "text" name = "searchString" autofocus = "autofocus" value = "${searchString}" autocomplete = "off"/>
-            <input type = "submit" value = "Search"/>
             <input type = "submit" name = "create" value="Add new..."/>
             <label>
                 <input type = "radio" name = "dictionaryLang" value = "SE"

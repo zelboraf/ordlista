@@ -32,4 +32,16 @@
     </div>
 </section>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    var runOnlyOnce = true;
+    if (runOnlyOnce) {
+        var inputTxt = $('input[name="swedishWord"]');
+        var tmpStr = inputTxt.val();
+        $(inputTxt).val("").focus().val(tmpStr);    // keep cursor at end of line
+    }
+});
+</script>
+
 <%@include file="../includes/footer.jsp" %>
