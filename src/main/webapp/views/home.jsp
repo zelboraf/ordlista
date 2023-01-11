@@ -64,11 +64,20 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
+var runOnce = true;
 $(document).ready(function(){
     var inputTxt = $('input[name="searchString"]');
-    var tmpStr = inputTxt.val();
-    $(inputTxt).val("").focus().val(tmpStr);    // keep cursor at end of line
-    $(inputTxt).on('input', function(){         // auto submit form on changes
+
+    var tmpStr = inputTxt.val();                                    // keep cursor at end of line
+    $(inputTxt).val("").focus().val(tmpStr);
+
+    var isUpdated = ('${message}' == "updated") ? true : false;     // select all text after update
+    if (runOnce && isUpdated) {
+        $(inputTxt).select();
+        runOnce = false;
+    }
+
+    $(inputTxt).on('input', function(){                             // auto submit form on changes
         if (inputTxt.val().length > 2)
             $('form').submit();
     });

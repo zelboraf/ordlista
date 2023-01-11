@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -40,9 +41,10 @@ public class DictionaryController {
     public String getHomeView(Model model,
                               @ModelAttribute("searchString") String searchString,
                               @ModelAttribute("dictionaryLang") String dictionaryLang,
-                              @ModelAttribute("swedishWord") String swedishWord) {
+                              @ModelAttribute("message") String message) {
         log.info("GET");
         setHomeView(model, searchString, dictionaryLang);
+        model.addAttribute("message", message);
         return "/home";
     }
 
@@ -73,14 +75,15 @@ public class DictionaryController {
     @PostMapping("/edit")
     public String postEditView(Model model,
                                @ModelAttribute Dictionary dictionary,
-                               @RequestParam(required = false) String cancel) {
+                               @RequestParam(required = false) String cancel,
+                               RedirectAttributes redirectAttributes) {
         if (cancel != null) {
             return "redirect:/home";
         }
         // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
         updateSearchString(model, dictionary);
-        model.addAttribute("message", "Record has been updated.");
+        redirectAttributes.addFlashAttribute("message", "updated");
         return "redirect:/home";
     }
 
@@ -90,7 +93,7 @@ public class DictionaryController {
         // TODO: delete confirmation dialog
         dictionaryService.deleteEntryById(id);
         model.addAttribute("searchString", searchString);
-        model.addAttribute("message", "Record deleted from dictionary.");
+        model.addAttribute("message", "deleted");
         return "redirect:/home";
     }
 
@@ -143,7 +146,8 @@ public class DictionaryController {
 
     private void updateSearchString(Model model, Dictionary dictionary) {
         String[] splitSwedishWord = dictionary.getSwedishWord().split("\\s+");
-        model.addAttribute("searchString", splitSwedishWord[0]);
+        String searchString = splitSwedishWord[0].replace("|", "");
+        model.addAttribute("searchString", searchString);
     }
 
 }
