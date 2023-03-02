@@ -100,7 +100,7 @@ public class DictionaryController {
     // METHODS
 
     private void setHomeView(Model model, String searchString, String dictionaryLang) {
-        if (!searchString.equals("")) {
+        if (!searchString.isEmpty()) {
             log.info("searching for >" + searchString + "<");
             List<Dictionary> dictionaryStartingWith = getDictionaryStartingWith(searchString, dictionaryLang);
             List<Dictionary> dictionaryContaining = getDictionaryContaining(searchString, dictionaryLang);
