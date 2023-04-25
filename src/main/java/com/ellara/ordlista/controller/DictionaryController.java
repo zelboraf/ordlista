@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@SessionAttributes("searchString")
+@SessionAttributes("searchString, autoRefresh")
 @AllArgsConstructor
 public class DictionaryController {
 
@@ -29,6 +29,8 @@ public class DictionaryController {
     public String setUpSearchString() { return new String(""); }
     @ModelAttribute("dictionaryLang")
     public String setUpDictionaryLang() { return new String("SE"); }
+    @ModelAttribute("autoRefresh")
+    public Boolean setUpAutoRefresh() { return Boolean.TRUE; }
 
     // REDIRECT
     @GetMapping("/")
