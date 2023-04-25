@@ -9,3 +9,9 @@ input {
 input[type="text"] {
   font-size: x-large;
 }
+div {
+  border: 5px;
+}
+#loadingAnimation {
+  color: blue;
+}

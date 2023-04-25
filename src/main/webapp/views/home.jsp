@@ -23,6 +23,9 @@
                 <c:if test="${autoRefresh}">checked</c:if>
             />
                 <label for = "autoRefresh">autoRefresh</label>
+            <span id="loadingAnimation" hidden="true">
+                Loading...
+            </span>
         </div>
     <p>${message}</p>
     </div>
@@ -89,20 +92,30 @@ $(document).ready(function() {
         keepCursorAtEOL();
     });
 
-    $(inputTxt).on('input', function() {                                 // auto submit form on changes
+    $(inputTxt).on('input', function() {                                 // auto submit form while typing
         if (inputTxt.val().length > 2 && autoRefreshIsOn) {
-            $('form').submit();
+            submitForm();
         }
     });
 
-    $('input[name="dictionaryLang"]').change(function() {
-        $('form').submit();
+    $('input[name="dictionaryLang"]').change(function() {               // submit on language change
+        submitForm();
     });
 
-    function keepCursorAtEOL() {
-        var tmpStr = inputTxt.val();                                    // keep cursor at end of line
+    $('input[name="search"]').click(function() {
+        submitForm();
+    });
+
+    function keepCursorAtEOL() {                                        // keep cursor at end of line
+        var tmpStr = inputTxt.val();
         $(inputTxt).val("").focus().val(tmpStr);
-    }
+    };
+
+    function submitForm() {                                             // show animation on submit
+        $('#loadingAnimation').show();
+        $('form').submit();
+    };
+
 });
 </script>
 
