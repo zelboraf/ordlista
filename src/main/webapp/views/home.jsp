@@ -66,7 +66,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 var runOnce = true;
-$(document).ready(function(){
+$(document).ready(function() {
     var inputTxt = $('input[name="searchString"]');
 
     keepCursorAtEOL();
@@ -78,7 +78,7 @@ $(document).ready(function(){
     };
 
     var autoRefreshIsOn = $('input[name="autoRefresh"]').prop('checked');
-    $('input[name="autoRefresh"]').change(function(){                   // set autoRefresh on checkbox change
+    $('input[name="autoRefresh"]').change(function() {                   // set autoRefresh on checkbox change
         if (autoRefreshIsOn) {
             autoRefreshIsOn = false;
             <c:set var = "autoRefresh" scope = "session" value="false" />
@@ -89,11 +89,14 @@ $(document).ready(function(){
         keepCursorAtEOL();
     });
 
-    $(inputTxt).on('input', function(){                                 // auto submit form on changes
+    $(inputTxt).on('input', function() {                                 // auto submit form on changes
         if (inputTxt.val().length > 2 && autoRefreshIsOn) {
-            console.log('dupa');
             $('form').submit();
         }
+    });
+
+    $('input[name="dictionaryLang"]').change(function() {
+        $('form').submit();
     });
 
     function keepCursorAtEOL() {
