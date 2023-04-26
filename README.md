@@ -1,6 +1,6 @@
 ### ordlista
 
-No description yet.
+Simple swedish-polish dictionary application.
 
 
   
