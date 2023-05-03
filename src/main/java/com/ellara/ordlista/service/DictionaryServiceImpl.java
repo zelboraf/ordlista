@@ -14,16 +14,6 @@ public class DictionaryServiceImpl implements DictionaryService {
     private DictionaryRepository dictionaryRepository;
 
     @Override
-    public List<Dictionary> findAllSwedishStartingWith(String searchString) {
-        return dictionaryRepository.findAllSwedishStartingWith(searchString);
-    }
-
-    @Override
-    public List<Dictionary> findAllPolishStartingWith(String searchString) {
-        return dictionaryRepository.findAllPolishStartingWith(searchString);
-    }
-
-    @Override
     public List<Dictionary> findAllSwedishContaining(String searchString) {
         return dictionaryRepository.findAllSwedishContaining(searchString);
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionAttributes("searchString, dictionaryLang, autoRefresh")
@@ -58,7 +59,11 @@ public class DictionaryController {
         log.info("POST");
         if (create != null) {
             Dictionary dictionary = new Dictionary();
-            setDictionaryLang(searchString, dictionaryLang, dictionary);
+            if (dictionaryLang.equals("SE")) {
+                dictionary.setSwedishWord(searchString);
+            } else {
+                dictionary.setPolishWord(searchString);
+            }
             model.addAttribute(dictionary);
             return "edit";
         }
@@ -84,7 +89,11 @@ public class DictionaryController {
         }
         // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
-        updateSearchString(model, dictionary);
+
+        String[] splitSwedishWord = dictionary.getSwedishWord().split("\\s+");
+        String searchString = splitSwedishWord[0].replace("|", "");
+        model.addAttribute("searchString", searchString);
+
         redirectAttributes.addFlashAttribute("message", "updated");
         return "redirect:/home";
     }
@@ -104,52 +113,29 @@ public class DictionaryController {
     private void setHomeView(Model model, String searchString, String dictionaryLang) {
         if (!searchString.isEmpty()) {
             log.info("searching for >" + searchString + "<");
-            List<Dictionary> dictionaryStartingWith = getDictionaryStartingWith(searchString, dictionaryLang);
-            List<Dictionary> dictionaryContaining = getDictionaryContaining(searchString, dictionaryLang);
+
+            List<Dictionary> dictionaryContaining;
+            List<Dictionary> dictionaryStartingWith;
+            if (dictionaryLang.equals("SE")) {
+                dictionaryContaining = dictionaryService.findAllSwedishContaining(searchString);
+                dictionaryStartingWith = dictionaryContaining
+                        .stream()
+                        .filter(c -> c.getSwedishWord().startsWith(searchString))
+                        .collect(Collectors.toList());
+            } else {
+                dictionaryContaining = dictionaryService.findAllPolishContaining(searchString);
+                dictionaryStartingWith = dictionaryContaining
+                        .stream()
+                        .filter(c -> c.getPolishWord().startsWith(searchString))
+                        .collect(Collectors.toList());
+            }
             dictionaryContaining.removeAll(dictionaryStartingWith);
-            addModelAttributes(model, dictionaryStartingWith, dictionaryContaining, dictionaryLang, searchString);
+
+            model.addAttribute("searchString", searchString);
+            model.addAttribute("dictionaryLang", dictionaryLang);
+            model.addAttribute("dictionaryStartingWith", dictionaryStartingWith);
+            model.addAttribute("dictionaryContaining", dictionaryContaining);
         }
-    }
-
-    private List<Dictionary> getDictionaryStartingWith(String searchString, String dictionaryLang) {
-        List<Dictionary> dictionary;
-        if (dictionaryLang.equals("SE")) {
-            dictionary = dictionaryService.findAllSwedishStartingWith(searchString);
-        } else {
-            dictionary = dictionaryService.findAllPolishStartingWith(searchString);
-        }
-        return dictionary;
-    }
-
-    private List<Dictionary> getDictionaryContaining(String searchString, String dictionaryLang) {
-        List<Dictionary> dictionary;
-        if (dictionaryLang.equals("SE")) {
-            dictionary = dictionaryService.findAllSwedishContaining(searchString);
-        } else {
-            dictionary = dictionaryService.findAllPolishContaining(searchString);
-        }
-        return dictionary;
-    }
-
-    private void addModelAttributes(Model model, List<Dictionary> dictionaryStartingWith, List<Dictionary> dictionaryContaining, String dictionaryLang, String searchString) {
-        model.addAttribute("dictionaryStartingWith", dictionaryStartingWith);
-        model.addAttribute("dictionaryContaining", dictionaryContaining);
-        model.addAttribute("dictionaryLang", dictionaryLang);
-        model.addAttribute("searchString", searchString);
-    }
-
-    private void setDictionaryLang(String searchString, String dictionaryLang, Dictionary dictionary) {
-        if (dictionaryLang.equals("SE")) {
-            dictionary.setSwedishWord(searchString);
-        } else {
-            dictionary.setPolishWord(searchString);
-        }
-    }
-
-    private void updateSearchString(Model model, Dictionary dictionary) {
-        String[] splitSwedishWord = dictionary.getSwedishWord().split("\\s+");
-        String searchString = splitSwedishWord[0].replace("|", "");
-        model.addAttribute("searchString", searchString);
     }
 
 }
