@@ -9,8 +9,8 @@
         <h1>Technical dictionary SE-PL</h1>
         <div>
             <input type = "text" name = "searchString" autofocus = "autofocus" value = "${searchString}" autocomplete = "off"/>
-            <input type = "submit" name = "search" value="Search"/>
             <input type = "submit" name = "create" value="Add new..."/>
+            <input type = "submit" name = "search" value="Search"/>
             <input type = "radio" id = "langSE" name = "dictionaryLang" value = "SE"
                 <c:if test="${dictionaryLang == 'SE'}">checked</c:if>
             />
