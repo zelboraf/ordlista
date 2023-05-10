@@ -27,9 +27,9 @@ public class DictionaryController {
         return dictionaryService.countAll() + " dictionary entries";
     }
     @ModelAttribute("searchString")
-    public String setUpSearchString() { return new String(""); }
+    public String setUpSearchString() { return ""; }
     @ModelAttribute("dictionaryLang")
-    public String setUpDictionaryLang() { return new String("SE"); }
+    public String setUpDictionaryLang() { return "SE"; }
     @ModelAttribute("autoRefresh")
     public Boolean setUpAutoRefresh() { return Boolean.TRUE; }
 
@@ -92,8 +92,8 @@ public class DictionaryController {
 
         String[] splitSwedishWord = dictionary.getSwedishWord().split("\\s+");
         String searchString = splitSwedishWord[0].replace("|", "");
-        model.addAttribute("searchString", searchString);
 
+        redirectAttributes.addFlashAttribute("searchString", searchString);
         redirectAttributes.addFlashAttribute("message", "updated");
         return "redirect:/home";
     }
