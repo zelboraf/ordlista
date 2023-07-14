@@ -18,9 +18,8 @@
                     </tr>
                     <tr>
                         <td>
-                        <c:forEach items = "${answers}" var = "dictionary" >
-                            <input type = "radio" id = "${dictionary.id}" name = "answer" value = "${dictionary.id}"/>
-                            <label for = "${dictionary.id}">${dictionary.polishWord}</label>
+                        <c:forEach items = "${answers}" var = "answer">
+                            <button type="button" id= "${answer.id}">${answer.polishWord}</button>
                             <br/>
                         </c:forEach>
                         </td>
@@ -40,6 +39,10 @@
 $(document).ready(function(){
     $("button").click(function(){
         $("#answer").show();
+        var answer = $(this).attr('id');
+        if (${question.id} == answer) {
+            console.log('bravo')
+        }
     });
 });
 </script>
