@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,8 +110,34 @@ public class DictionaryController {
         return "redirect:/home";
     }
 
-    // METHODS
+    // QUIZ
+    @GetMapping("/quiz")
+    public String getQuizView(Model model) {
+        long entriesCount = Long.parseLong(dictionaryService.countAll());
 
+        Dictionary question = getRandomDictionary(entriesCount);
+        model.addAttribute("question", question);
+
+        List<Dictionary> answers = new ArrayList<>();
+        answers.add(question);
+        for (int x = 0; x < 4; x++){
+            answers.add(getRandomDictionary(entriesCount));
+        }
+        Collections.shuffle(answers);
+        model.addAttribute("answers", answers);
+        return "quiz";
+    }
+
+    @PostMapping("/quiz")
+    public String postQuizView(Model model) {
+        return "quiz";
+    }
+
+
+
+    //
+    // METHODS
+    //
     private void setHomeView(Model model, String searchString, String dictionaryLang) {
         if (!searchString.isEmpty()) {
             log.info("searching for >" + searchString + "<");
@@ -136,6 +164,17 @@ public class DictionaryController {
             model.addAttribute("dictionaryStartingWith", dictionaryStartingWith);
             model.addAttribute("dictionaryContaining", dictionaryContaining);
         }
+    }
+
+    private Dictionary getRandomDictionary(Long maxRandom) {
+        long randomId;
+        Dictionary dictionary = null;
+
+        while (dictionary == null) {
+            randomId = (long) (Math.random() * maxRandom + 1);
+            dictionary = dictionaryService.fetchDictionaryById(randomId);
+        }
+        return dictionary;
     }
 
 }
