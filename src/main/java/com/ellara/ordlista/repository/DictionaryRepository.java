@@ -18,4 +18,10 @@ public interface DictionaryRepository extends JpaRepository<Dictionary, Long> {
 
     @Query(value = "SELECT COUNT(*) FROM dictionary", nativeQuery = true)
     String countAll();
+
+    @Query(value = "SELECT * FROM dictionary ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    Dictionary getOneRandom();
+
+    @Query(value = "SELECT * FROM dictionary ORDER BY RAND() LIMIT ?1", nativeQuery = true)
+    List<Dictionary> getRandom(int numberOfDictionaries);
 }

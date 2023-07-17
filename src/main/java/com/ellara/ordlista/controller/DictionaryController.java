@@ -113,17 +113,10 @@ public class DictionaryController {
     // QUIZ
     @GetMapping("/quiz")
     public String getQuizView(Model model) {
-        long entriesCount = Long.parseLong(dictionaryService.countAll());
-
-        Dictionary question = getRandomDictionary(entriesCount);
-        model.addAttribute("question", question);
-
-        List<Dictionary> answers = new ArrayList<>();
+        Dictionary question = dictionaryService.fetchRandomDictionary();
+        List<Dictionary> answers = dictionaryService.fetchRandomDictionaries(4);
         answers.add(question);
-        for (int x = 0; x < 4; x++){
-            answers.add(getRandomDictionary(entriesCount));
-        }
-        Collections.shuffle(answers);
+        model.addAttribute("question", question);
         model.addAttribute("answers", answers);
         return "quiz";
     }

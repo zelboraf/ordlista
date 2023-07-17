@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface DictionaryService {
 
+    String countAll();
+
     List<Dictionary> findAllSwedishContaining(String searchString);
 
     List<Dictionary> findAllPolishContaining(String searchString);
@@ -16,5 +18,7 @@ public interface DictionaryService {
 
     void saveDictionary(Dictionary dictionary);
 
-    String countAll();
+    Dictionary fetchRandomDictionary();
+
+    List<Dictionary> fetchRandomDictionaries(int numberOfDictionaries);
 }
