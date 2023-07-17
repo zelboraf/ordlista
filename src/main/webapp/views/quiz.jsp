@@ -11,9 +11,6 @@
                     <tr>
                         <td>
                             ${question.swedishWord}
-                            <div hidden id="answer">
-                                ${question.polishWord}
-                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -28,7 +25,6 @@
             </div>
             <div>
                 <input type="submit" value="Next question"/>
-                <button type="button">Check answer</button>
             </div>
         </form>
     </div>
@@ -38,11 +34,12 @@
 <script>
 $(document).ready(function(){
     $("button").click(function(){
-        $("#answer").show();
         var answer = $(this).attr('id');
         if (${question.id} == answer) {
-            console.log('bravo')
-        }
+            $(this).css({backgroundColor: '#AED581'});
+        } else {
+            $(this).css({backgroundColor: '#F8BBD0'});
+        };
     });
 });
 </script>

@@ -130,7 +130,7 @@ public class DictionaryController {
 
     @PostMapping("/quiz")
     public String postQuizView(Model model) {
-        return "quiz";
+        return "redirect:/quiz";
     }
 
 
