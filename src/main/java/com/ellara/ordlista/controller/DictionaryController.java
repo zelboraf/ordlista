@@ -114,9 +114,13 @@ public class DictionaryController {
     @GetMapping("/quiz")
     public String getQuizView(Model model) {
         Dictionary question = dictionaryService.fetchRandomDictionary();
+        String swedish = question.getSwedishWord().replace("|", "");
+        question.setSwedishWord(swedish);
+
         List<Dictionary> answers = dictionaryService.fetchRandomDictionaries(4);
         answers.add(question);
         Collections.shuffle(answers);
+
         model.addAttribute("question", question);
         model.addAttribute("answers", answers);
         return "quiz";
