@@ -116,16 +116,11 @@ public class DictionaryController {
         Dictionary question = dictionaryService.fetchRandomDictionary();
         List<Dictionary> answers = dictionaryService.fetchRandomDictionaries(4);
         answers.add(question);
+        Collections.shuffle(answers);
         model.addAttribute("question", question);
         model.addAttribute("answers", answers);
         return "quiz";
     }
-
-    @PostMapping("/quiz")
-    public String postQuizView(Model model) {
-        return "redirect:/quiz";
-    }
-
 
 
     //
@@ -157,17 +152,6 @@ public class DictionaryController {
             model.addAttribute("dictionaryStartingWith", dictionaryStartingWith);
             model.addAttribute("dictionaryContaining", dictionaryContaining);
         }
-    }
-
-    private Dictionary getRandomDictionary(Long maxRandom) {
-        long randomId;
-        Dictionary dictionary = null;
-
-        while (dictionary == null) {
-            randomId = (long) (Math.random() * maxRandom + 1);
-            dictionary = dictionaryService.fetchDictionaryById(randomId);
-        }
-        return dictionary;
     }
 
 }

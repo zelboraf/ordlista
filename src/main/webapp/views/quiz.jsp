@@ -5,7 +5,7 @@
 
 <section>
     <div>
-        <form action = "/quiz" method = "post">
+        <form action = "/quiz" method = "get">
             <div>
                 <table>
                     <tr>
