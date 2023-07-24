@@ -29,11 +29,6 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public Dictionary fetchRandomDictionary() {
-        return dictionaryRepository.getOneRandom();
-    }
-
-    @Override
     public List<Dictionary> fetchRandomDictionaries(int numberOfDictionaries) {
         return dictionaryRepository.getRandom(numberOfDictionaries);
     }

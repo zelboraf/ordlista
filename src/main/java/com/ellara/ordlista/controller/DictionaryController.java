@@ -113,7 +113,7 @@ public class DictionaryController {
     // QUIZ
     @GetMapping("/quiz")
     public String getQuizView(Model model) {
-        Dictionary question = dictionaryService.fetchRandomDictionary();
+        Dictionary question = dictionaryService.fetchRandomDictionaries(1).get(0);
         String swedish = question.getSwedishWord().replace("|", "");
         question.setSwedishWord(swedish);
 

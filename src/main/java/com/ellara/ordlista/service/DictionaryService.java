@@ -18,7 +18,5 @@ public interface DictionaryService {
 
     void saveDictionary(Dictionary dictionary);
 
-    Dictionary fetchRandomDictionary();
-
     List<Dictionary> fetchRandomDictionaries(int numberOfDictionaries);
 }
