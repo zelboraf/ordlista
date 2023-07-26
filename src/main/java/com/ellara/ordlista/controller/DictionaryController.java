@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@SessionAttributes("searchString, dictionaryLang, autoRefresh")
+//@SessionAttributes("searchString, dictionaryLang, autoRefresh")
 @AllArgsConstructor
 public class DictionaryController {
 
@@ -89,11 +89,10 @@ public class DictionaryController {
         if (cancel != null) {
             return "redirect:/home";
         }
-        // TODO: validate input before save
         dictionaryService.saveDictionary(dictionary);
 
         String[] splitSwedishWord = dictionary.getSwedishWord().split("\\s+");
-        String searchString = splitSwedishWord[0].replace("|", "");
+        String searchString = splitSwedishWord[0].replaceAll("[|,]", "");
 
         redirectAttributes.addFlashAttribute("searchString", searchString);
         redirectAttributes.addFlashAttribute("message", "updated");
@@ -102,19 +101,17 @@ public class DictionaryController {
 
     // DELETE
     @GetMapping("/delete/{id}")
-    public String getDeleteView(@PathVariable Long id, Model model, String searchString) {
-        // TODO: delete confirmation dialog
+    public String getDeleteView(@PathVariable Long id) {
         dictionaryService.deleteEntryById(id);
-        model.addAttribute("searchString", searchString);
-        model.addAttribute("message", "deleted");
         return "redirect:/home";
     }
 
     // QUIZ
     @GetMapping("/quiz")
     public String getQuizView(Model model) {
-        Dictionary question = dictionaryService.fetchRandomDictionaries(1).get(0);
-        String swedish = question.getSwedishWord().replace("|", "");
+        List<Dictionary> questions = dictionaryService.fetchRandomDictionaries(1);
+        Dictionary question = questions.get(0);
+        String swedish = question.getSwedishWord().replaceAll("[|,]", "");
         question.setSwedishWord(swedish);
 
         List<Dictionary> answers = dictionaryService.fetchRandomDictionaries(4);
