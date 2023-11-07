@@ -11,13 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-//@SessionAttributes("searchString, dictionaryLang, autoRefresh")
+@SessionAttributes("searchString, dictionaryLang, autoRefresh")
 @AllArgsConstructor
 public class DictionaryController {
 
@@ -30,7 +30,7 @@ public class DictionaryController {
     }
     @ModelAttribute("searchString")
     public String setUpSearchString() { return ""; }
-    @ModelAttribute("dictionaryLang")
+    @ModelAttribute(value = "dictionaryLang")
     public String setUpDictionaryLang() { return "SE"; }
     @ModelAttribute("autoRefresh")
     public Boolean setUpAutoRefresh() { return Boolean.TRUE; }
@@ -43,18 +43,19 @@ public class DictionaryController {
 
     // HOME VIEW
     @GetMapping("/home")
-    public String getHomeView(Model model,
+    public String getHomeView(Model model, HttpSession session,
                               @ModelAttribute("searchString") String searchString,
                               @ModelAttribute("dictionaryLang") String dictionaryLang,
                               @ModelAttribute("message") String message) {
         log.info("GET");
         setHomeView(model, searchString, dictionaryLang);
         model.addAttribute("message", message);
+        session.setAttribute("searchString", searchString);
         return "/home";
     }
 
     @PostMapping("/home")
-    public String postHomeView(Model model,
+    public String postHomeView(Model model, HttpSession session,
                                @RequestParam String searchString,
                                @RequestParam String dictionaryLang,
                                @RequestParam(required = false) String create) {
@@ -70,6 +71,7 @@ public class DictionaryController {
             return "edit";
         }
         setHomeView(model, searchString, dictionaryLang);
+        session.setAttribute("searchString", searchString);
         return "/home";
     }
 
@@ -82,27 +84,27 @@ public class DictionaryController {
     }
 
     @PostMapping("/edit")
-    public String postEditView(Model model,
+    public String postEditView(Model model, HttpSession session,
                                @ModelAttribute Dictionary dictionary,
                                @RequestParam(required = false) String cancel,
                                RedirectAttributes redirectAttributes) {
+        String searchString = (String) session.getAttribute("searchString");
+        redirectAttributes.addFlashAttribute("searchString", searchString);
         if (cancel != null) {
             return "redirect:/home";
         }
         dictionaryService.saveDictionary(dictionary);
-
-        String[] splitSwedishWord = dictionary.getSwedishWord().split("\\s+");
-        String searchString = splitSwedishWord[0].replaceAll("[|,]", "");
-
-        redirectAttributes.addFlashAttribute("searchString", searchString);
         redirectAttributes.addFlashAttribute("message", "updated");
         return "redirect:/home";
     }
 
     // DELETE
     @GetMapping("/delete/{id}")
-    public String getDeleteView(@PathVariable Long id) {
+    public String getDeleteView(HttpSession session, @PathVariable Long id, RedirectAttributes redirectAttributes) {
         dictionaryService.deleteEntryById(id);
+        String searchString = (String) session.getAttribute("searchString");
+        redirectAttributes.addFlashAttribute("searchString", searchString);
+        redirectAttributes.addFlashAttribute("message", "deleted");
         return "redirect:/home";
     }
 

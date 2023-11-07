@@ -12,7 +12,7 @@
 
 	<groupId>com.ellara</groupId>
 	<artifactId>ordlista</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 	<name>ordlista</name>
 	<description>Ellära ordlista projekt</description>
 
@@ -85,6 +85,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
