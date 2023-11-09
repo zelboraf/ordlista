@@ -26,17 +26,7 @@ public class Dictionary {
     @Column(name = "conjugation")
     private String conjugation;
 
-    @Column(name = "pronunciation")
-    private String pronunciation;
-
-    @Column(name = "opposite")
-    private String opposite;
-
     @JoinColumn(name = "partOfSpeech")
-    @ManyToOne
-    private PartOfSpeech partOfSpeech;
+    private String partOfSpeech;
 
 }
-
-
-
