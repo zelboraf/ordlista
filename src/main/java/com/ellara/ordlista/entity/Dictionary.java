@@ -17,16 +17,16 @@ public class Dictionary {
     @Column(name = "id", nullable = false, unique = true)
     private long id;
 
-    @Column(name = "swedish", nullable = false, unique = true)
+    @Column(name = "swedish", nullable = false)
     private String swedishWord;
 
-    @Column(name = "polish", nullable = false, unique = true)
+    @Column(name = "polish", nullable = false)
     private String polishWord;
 
     @Column(name = "conjugation")
     private String conjugation;
 
-    @JoinColumn(name = "partOfSpeech")
+    @Column(name = "partOfSpeech")
     private String partOfSpeech;
 
 }
