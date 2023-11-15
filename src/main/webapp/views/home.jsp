@@ -40,8 +40,17 @@
             </tr>
             <c:forEach var = "dictionary" items = "${dictionaryStartingWith}">
                 <tr>
-                    <td><c:out value = "${dictionary.swedishWord}"/></td>
-                    <td><c:out value = "${dictionary.polishWord}"/></td>
+                    <td><c:out value = "${dictionary.swedishWord}"/>
+                        </br>
+                        <span class="italic">
+                            <c:out value = "${dictionary.conjugation}"/>
+                            &nbsp;&nbsp;
+                            <c:out value = "${dictionary.partOfSpeech}"/>
+                        </span>
+                    </td>
+                    <td>
+                        <c:out value = "${dictionary.polishWord}"/>
+                    </td>
                     <td>
                         <a href="/delete/${dictionary.id}">delete</input>
                         <a href="/edit/${dictionary.id}">edit</input>
@@ -53,8 +62,18 @@
         <table>
             <c:forEach var = "dictionary" items = "${dictionaryContaining}">
                 <tr>
-                    <td><c:out value = "${dictionary.swedishWord}"/></td>
-                    <td><c:out value = "${dictionary.polishWord}"/></td>
+                    <td>
+                        <c:out value = "${dictionary.swedishWord}"/>
+                        </br>
+                        <span class="italic">
+                            <c:out value = "${dictionary.conjugation}"/>
+                            &nbsp;&nbsp;
+                            <c:out value = "${dictionary.partOfSpeech}"/>
+                        </span>
+                    </td>
+                    <td>
+                        <c:out value = "${dictionary.polishWord}"/>
+                    </td>
                     <td>
                         <a href="/delete/${dictionary.id}">delete</input>
                         <a href="/edit/${dictionary.id}">edit</input>
