@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Controller
@@ -71,7 +70,6 @@ public class DictionaryController {
             model.addAttribute(dictionary);
             return "edit";
         }
-        searchString = searchString.toLowerCase(Locale.ROOT);
         setHomeView(model, searchString, dictionaryLang);
         session.setAttribute("searchString", searchString);
         return "/home";
@@ -135,8 +133,8 @@ public class DictionaryController {
         if (!searchString.isEmpty()) {
             log.info("searching for >" + searchString + "<");
 
-            List<Dictionary> dictionaryStartingWith;
             List<Dictionary> dictionaryContaining;
+            List<Dictionary> dictionaryStartingWith;
             if (dictionaryLang.equals("SE")) {
                 dictionaryContaining = dictionaryService.findAllSwedishContaining(searchString);
                 dictionaryStartingWith = dictionaryContaining
