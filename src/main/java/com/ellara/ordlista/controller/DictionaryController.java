@@ -81,7 +81,9 @@ public class DictionaryController {
     @GetMapping("/edit/{id}")
     public String getEditView(Model model, @PathVariable Long id) {
         Dictionary dictionary = dictionaryService.fetchDictionaryById(id);
+        List<String> partsOfSpeechList = dictionaryService.fetchPartsOfSpeechList();
         model.addAttribute("dictionary", dictionary);
+        model.addAttribute("partsOfSpeechList", partsOfSpeechList);
         return "edit";
     }
 

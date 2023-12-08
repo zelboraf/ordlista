@@ -19,4 +19,6 @@ public interface DictionaryService {
     void saveDictionary(Dictionary dictionary);
 
     List<Dictionary> fetchRandomDictionaries(int numberOfDictionaries);
+
+    List<String> fetchPartsOfSpeechList();
 }

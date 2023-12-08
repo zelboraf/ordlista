@@ -21,7 +21,11 @@
                                 <label>Conjugation: </label>
                                 <input type = "text" name = "conjugation" value = "${dictionary.conjugation}"/></br>
                                 <label>Part of speech: </label>
-                                <input type = "text" name = "partOfSpeech" value = "${dictionary.partOfSpeech}"/>
+                                <select name = "partOfSpeech" value = "${dictionary.partOfSpeech}"/>
+                                <c:forEach var = "part" items = "${partsOfSpeechList}">
+                                    <option value="${part}" <c:if test="${dictionary.partOfSpeech == part}">selected="selected"</c:if>>${part}</option>
+                                </c:forEach>
+                                </select>
                             </div
                         </td>
                         <td>

@@ -21,4 +21,7 @@ public interface DictionaryRepository extends JpaRepository<Dictionary, Long> {
 
     @Query(value = "SELECT * FROM dictionary ORDER BY RAND() LIMIT ?1", nativeQuery = true)
     List<Dictionary> getRandom(int numberOfDictionaries);
+
+    @Query(value = "SELECT DISTINCT part_of_speech FROM dictionary ORDER BY part_of_speech", nativeQuery = true)
+    List<String> fetchPartsOfSpeechList();
 }
