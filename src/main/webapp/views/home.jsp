@@ -31,13 +31,15 @@
     </div>
 
     <div>
-        <c:out value="${'starting with:'}"/>
         <table>
             <tr>
                 <th>Swedish</th>
                 <th>Polish</th>
                 <th>action</th>
             </tr>
+            <c:if test="${empty dictionaryStartingWith}">
+                <tr><td colspan="3"><b>No results.</b></td></tr>
+            </c:if>
             <c:forEach var = "dictionary" items = "${dictionaryStartingWith}">
                 <tr>
                     <td><c:out value = "${dictionary.swedishWord}"/>
@@ -57,9 +59,8 @@
                     </td>
                 </tr>
             </c:forEach>
-        </table>
-        <c:out value="${'containing:'}"/></tr>
-        <table>
+            <c:if test="${!empty dictionaryContaining}">
+                <tr><td colspan="3"><b>Other records containing phrase:</b></td></tr>
             <c:forEach var = "dictionary" items = "${dictionaryContaining}">
                 <tr>
                     <td>
@@ -80,6 +81,7 @@
                     </td>
                 </tr>
             </c:forEach>
+            </c:if>
         </table>
     </div>
 </form>
