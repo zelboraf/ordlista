@@ -69,6 +69,8 @@ public class DictionaryController {
                 dictionary.setPolishWord(searchString);
             }
             model.addAttribute(dictionary);
+            List<String> partsOfSpeechList = dictionaryService.fetchPartsOfSpeechList();
+            model.addAttribute("partsOfSpeechList", partsOfSpeechList);
             return "edit";
         }
         searchString = searchString.toLowerCase(Locale.ROOT);
